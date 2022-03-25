@@ -15,8 +15,8 @@ public class GreetingController {
 
     /**
      * Hello user/world as JSON.
-     * @param name
-     * @return
+     * @param name username, "world" by default
+     * @return Hello user/world as JSON.
      */
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
