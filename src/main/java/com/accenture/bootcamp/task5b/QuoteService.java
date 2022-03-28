@@ -5,11 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+import java.util.Random;
+
 @Service
 public class QuoteService {
 
     private final ValueRepository valueRepository;
     private static final Logger log = LoggerFactory.getLogger(QuoteService.class);
+    private final Random rng=new SecureRandom();
 
     @Autowired
     public QuoteService(ValueRepository valueRepository) {
@@ -17,10 +21,11 @@ public class QuoteService {
     }
 
     public Quote getRandomQuote(){
+        long randomIdx=rng.nextLong(valueRepository.count());
         try {
-             return new Quote("success",valueRepository.findById(Math.round(Math.random()*valueRepository.count())).get());//crude, but should work
+             return new Quote("success",valueRepository.findById(randomIdx).get());//crude, but should work
         }catch (Exception x){
-            log.error("error getting random quote",x);
+            log.error("error getting random quote at index ["+randomIdx+"]",x);
             return new Quote("error", 0, x.getMessage());
         }
     }
