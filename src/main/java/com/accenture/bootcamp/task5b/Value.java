@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Value {
     @Id
-    @SequenceGenerator(name = "auote_seq", sequenceName = "quote_seq", allocationSize = 1)
+    @SequenceGenerator(name = "quote_seq", sequenceName = "quote_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE ,generator = "quote_seq")
     private Long id;
     private String quote;
