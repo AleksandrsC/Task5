@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class QuoteService {
-    @Autowired
+
     private final ValueRepository valueRepository;
     private static final Logger log = LoggerFactory.getLogger(QuoteService.class);
 
-
+    @Autowired
     public QuoteService(ValueRepository valueRepository) {
         this.valueRepository = valueRepository;
     }

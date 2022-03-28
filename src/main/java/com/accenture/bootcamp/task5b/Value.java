@@ -3,9 +3,8 @@ package com.accenture.bootcamp.task5b;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
-@Entity
-@Table
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
 public class Value {
     @Id
     @SequenceGenerator(name = "quote_seq", sequenceName = "quote_seq", allocationSize = 1)
