@@ -18,7 +18,7 @@ public class QuoteService {
 
     public Quote getRandomQuote(){
         try {
-             return new Quote("success",valueRepository.getReferenceById(Math.round(Math.random()*valueRepository.count())));//crude, but should work
+             return new Quote("success",valueRepository.findById(Math.round(Math.random()*valueRepository.count())).get());//crude, but should work
         }catch (Exception x){
             log.error("error getting random quote",x);
             return new Quote("error", 0, x.getMessage());
