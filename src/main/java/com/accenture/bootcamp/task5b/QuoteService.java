@@ -21,12 +21,17 @@ public class QuoteService {
     }
 
     public Quote getRandomQuote(){
-        long randomIdx=rng.nextLong(valueRepository.count());
+        long randomIdx = getRandomIdx();
         try {
              return new Quote("success",valueRepository.findById(randomIdx).get());//crude, but should work
         }catch (Exception x){
             log.error("error getting random quote at index ["+randomIdx+"]",x);
             return new Quote("error", 0, x.getMessage());
         }
+    }
+
+    private long getRandomIdx() {
+        long randomIdx=rng.nextLong(valueRepository.count());
+        return randomIdx;
     }
 }
