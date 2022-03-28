@@ -1,10 +1,15 @@
 package com.accenture.bootcamp.task5b;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
+@Entity
+@Table
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Value {
-
+    @Id
+    @SequenceGenerator(name = "auote_seq", sequenceName = "quote_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE ,generator = "quote_seq")
     private Long id;
     private String quote;
 
