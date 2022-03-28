@@ -1,16 +1,27 @@
 package com.accenture.bootcamp.task5b;
 
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class QuoteService {
-    private final AtomicLong counter = new AtomicLong();
-    public Quote getRandomQuote(){
-        Quote rv=new Quote("success",counter.incrementAndGet(),"This is a dummied-out version");
+    private final ValueRepository valueRepository;
+    private static final Logger log = LoggerFactory.getLogger(QuoteService.class);
 
-        return rv;
+    @Autowired
+    public QuoteService(ValueRepository valueRepository) {
+        this.valueRepository = valueRepository;
+    }
+
+    public Quote getRandomQuote(){
+        try {
+            Quote rv=new Quote("success",valueRepository.getReferenceById(Math.round(Math.random()*valueRepository.count())));//crude, but should work
+            return rv;
+        }catch (Exception x){
+            log.error("error getting random quote",x);
+            return new Quote("error", 0, x.getMessage());
+        }
     }
 }
