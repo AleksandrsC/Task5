@@ -2,7 +2,10 @@ package com.accenture.bootcamp.task5a;
 
 import com.accenture.bootcamp.task5b.Quote;
 import com.accenture.bootcamp.task5b.QuoteController;
+import com.accenture.bootcamp.task5b.QuoteService;
 import org.junit.jupiter.api.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -12,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class DemoApplicationTests {
+	private static final Logger log = LoggerFactory.getLogger(DemoApplicationTests.class);
 
 	@LocalServerPort
 	private int port;
@@ -29,9 +33,8 @@ class DemoApplicationTests {
 
 	@Test
 	void simpleRequest(){
-		Quote rv=new Quote();
-		rv=restTemplate.getForObject("http://localhost:" + port + "/", Quote.class);
-		assertEquals("success",rv.getType());
+		Quote rv=restTemplate.getForObject("http://localhost:" + port + "/quote", Quote.class);
+		assertEquals ("success",rv.getType());
 	}
 
 }
