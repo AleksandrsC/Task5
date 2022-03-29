@@ -40,8 +40,8 @@ public class QuoteService {
     }
 
     private long getRandomIdx() {
-        long randomIdx=rng.nextLong()%valueRepository.count();
-        return randomIdx;
+        //Java 11 doesn't have nextLong(min,max) this is a bit crude, but it works for low-importance app.
+        return Math.abs(rng.nextLong())%valueRepository.count();
     }
 
     public void insertQuote(Quote quote) {
