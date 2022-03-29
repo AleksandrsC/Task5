@@ -21,6 +21,13 @@ public class QuoteController {
         return quoteService.getRandomQuote();
     }
 
+
+    @PostMapping("/quoteById")
+    public Quote quote(@RequestBody Long id) {
+        return quoteService.getQuoteByID(id);
+    }
+
+
     @PostMapping("/insertQuote")
     public void insertQuote(@RequestBody Quote quote){
         quoteService.editQuote(quote,true);
@@ -30,6 +37,12 @@ public class QuoteController {
     public void editQuote(@RequestBody Quote quote){
         quoteService.editQuote(quote,false);
     }
+
+    @PostMapping("/deleteQuote")
+    public void deleteQuote(@RequestBody Long id){
+        quoteService.deleteById(id);
+    }
+
 
 
 }

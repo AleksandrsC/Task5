@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.owasp.validator.html.*;
 
 import java.security.SecureRandom;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -54,6 +55,33 @@ public class QuoteService {
 
     }
 
+    /**
+     *
+     * @param id id of the quote
+     * @return the quote or ["failure",null] if error
+     */
+    public Quote getQuoteByID(long id){
+        Quote rv=new Quote("error",null);
+        Optional<Value> result=valueRepository.findById(id);
+        if(result.isPresent()){
+            rv.setType("success");
+            rv.setValue(result.get());
+        }
+        return rv;
+    }
+
+    public void deleteById(Long id){
+        try {
+            valueRepository.deleteById(id);
+        }catch(Exception x){
+            log.error("error deleting ID:"+id, x);
+        }
+    }
+    /**
+     * insert/update method
+     * @param quote quote to edit
+     * @param isInsert if true the quote is added, even if there's a quote like that already, if false, the quote with Id provided is replaced with new quote, nothing happens if there's no quote with this id.
+     */
     public void editQuote(Quote quote, boolean isInsert) {
         Value v=quote.getValue();
         try {
