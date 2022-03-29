@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.owasp.validator.html.*;
 
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Random;
 
 @Service
@@ -44,25 +43,30 @@ public class QuoteService {
         return Math.abs(rng.nextLong())%valueRepository.count();
     }
 
-    public void editQuote(Quote quote, boolean isInsert) {
-        Value v=quote.getValue();
-        CleanResults scan = null;
-        try {
-            scan = new AntiSamy(quoteHTMLPolicy).scan(v.getQuote());
-        } catch (Exception e) {
-            log.error("input sanitization failed, refusing DB update.", e);
-            return;
-        }
+    private String sanitize(String qv) throws ScanException, PolicyException {
+        CleanResults scan = new AntiSamy(quoteHTMLPolicy).scan(qv);
         if(scan.getNumberOfErrors()>0) {
             StringBuilder sb = new StringBuilder("errors \n:");
             for (String s : scan.getErrorMessages()) sb.append(s);
             log.info(sb.toString());
         }
-        v.setQuote(scan.getCleanHTML());
+        return scan.getCleanHTML();
+
+    }
+
+    public void editQuote(Quote quote, boolean isInsert) {
+        Value v=quote.getValue();
+        try {
+            v.setQuote(sanitize(v.getQuote()));
+        }catch(Exception x){
+            log.error("failed to sanitize input, aborting update");
+            return;
+        }
+
         if(isInsert) {
             v.setId(null);
         }else if(!valueRepository.existsById(v.getId())){
-            log.error("attempt to upfdate nonexistent ID:"+v.getId());
+            log.error("attempt to update nonexistent ID:"+v.getId());
             return;
         }
         valueRepository.save(v);
