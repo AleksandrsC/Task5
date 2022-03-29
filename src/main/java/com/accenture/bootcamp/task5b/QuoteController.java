@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class QuoteController {
     private final QuoteService quoteService;
-
+//TODO: proper request types
     @Autowired
     public QuoteController(QuoteService quoteService) {
         this.quoteService = quoteService;
