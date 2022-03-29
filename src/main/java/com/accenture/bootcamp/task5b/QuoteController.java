@@ -23,7 +23,13 @@ public class QuoteController {
 
     @PostMapping("/insertQuote")
     public void insertQuote(@RequestBody Quote quote){
-        quoteService.insertQuote(quote);
+        quoteService.editQuote(quote,true);
     }
+
+    @PostMapping("/editQuote")
+    public void editQuote(@RequestBody Quote quote){
+        quoteService.editQuote(quote,false);
+    }
+
 
 }

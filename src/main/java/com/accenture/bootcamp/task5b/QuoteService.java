@@ -44,7 +44,7 @@ public class QuoteService {
         return Math.abs(rng.nextLong())%valueRepository.count();
     }
 
-    public void insertQuote(Quote quote) {
+    public void editQuote(Quote quote, boolean isInsert) {
         Value v=quote.getValue();
         CleanResults scan = null;
         try {
@@ -59,7 +59,12 @@ public class QuoteService {
             log.info(sb.toString());
         }
         v.setQuote(scan.getCleanHTML());
-        v.setId(null);
+        if(isInsert) {
+            v.setId(null);
+        }else if(!valueRepository.existsById(v.getId())){
+            log.error("attempt to upfdate nonexistent ID:"+v.getId());
+            return;
+        }
         valueRepository.save(v);
     }
 }
