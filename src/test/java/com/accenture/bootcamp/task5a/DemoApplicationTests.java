@@ -34,6 +34,7 @@ class DemoApplicationTests {
 	@Test
 	void simpleRequest(){
 		Quote rv=restTemplate.getForObject("http://localhost:" + port + "/quote", Quote.class);
+		log.info("index:"+rv.getValue().getId());
 		assertEquals ("success",rv.getType());
 	}
 
